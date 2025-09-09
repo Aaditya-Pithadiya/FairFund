@@ -19,12 +19,56 @@ export default function BiassDashboard() {
     ethnicity: 8,
   }
 
-  const recentAnalyses = [
-    { id: 1, applicant: "John Smith", overallBias: 12, status: "Low Risk" },
-    { id: 2, applicant: "Sarah Johnson", overallBias: 35, status: "Medium Risk" },
-    { id: 3, applicant: "Michael Chen", overallBias: 8, status: "Low Risk" },
-    { id: 4, applicant: "Maria Garcia", overallBias: 45, status: "High Risk" },
-  ]
+    const recentAnalyses = [
+      { id: 1, applicant: "John Smith", overallBias: 12, status: "Low Risk" },
+      { id: 2, applicant: "Sarah Johnson", overallBias: 35, status: "Medium Risk" },
+      { id: 3, applicant: "Michael Chen", overallBias: 8, status: "Low Risk" },
+      { id: 4, applicant: "Maria Garcia", overallBias: 45, status: "High Risk" },
+    ]
+
+    const dummyBiasResults = [
+      {
+        factor: "Gender",
+        result: "No significant bias detected. (Dummy)"
+      },
+      {
+        factor: "Age",
+        result: "Potential bias: Older applicants have higher rejection rates. (Dummy)"
+      },
+      {
+        factor: "Location",
+        result: "No location-based bias found. (Dummy)"
+      }
+    ]
+
+    return (
+      <div className="min-h-screen bg-gray-50 p-4">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-4 mb-4">
+              <Button variant="outline" size="sm" onClick={() => router.push("/")}>
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back
+              </Button>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Bias Detection Dashboard (Dummy)</h1>
+                <p className="text-gray-600">Monitor and analyze potential bias in loan evaluations</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {dummyBiasResults.map((item, idx) => (
+              <div key={idx} className="bg-gray-50 p-3 rounded">
+                <p className="font-semibold">{item.factor}</p>
+                <p className="text-sm text-gray-700">{item.result}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
 
   const getBiasLevel = (score: number) => {
     if (score <= 20) return { level: "Low", color: "text-green-600", variant: "default" as const }

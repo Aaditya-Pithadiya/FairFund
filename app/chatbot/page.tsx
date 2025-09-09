@@ -32,51 +32,49 @@ export default function ChatbotPage() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
+  const dummySections = [
+    {
+      section: "Loan Terms",
+      content: "The loan amount is $50,000 with a 5-year repayment period."
+    },
+    {
+      section: "Applicant Info",
+      content: "Applicant is 32 years old, employed, annual income $30,000."
+    },
+    {
+      section: "Risk Factors",
+      content: "High risk due to low income and high requested amount."
+    }
+  ];
+
   const handleSendMessage = async () => {
-    if (!inputMessage.trim()) return
+    if (!inputMessage.trim()) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       content: inputMessage,
       sender: "user",
       timestamp: new Date(),
-    }
+    };
 
-    setMessages((prev) => [...prev, userMessage])
-    setInputMessage("")
-    setIsLoading(true)
+    setMessages((prev) => [...prev, userMessage]);
+    setInputMessage("");
+    setIsLoading(true);
 
-    try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message: inputMessage }),
-      })
-
-      const data = await response.json()
-
+    setTimeout(() => {
+      // Dummy: pick a section based on keywords
+      let found = dummySections.find(s => inputMessage.toLowerCase().includes(s.section.toLowerCase().split(' ')[0]));
+      if (!found) found = dummySections[0];
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: data.response,
+        content: `Relevant section: "${found.section}".\n${found.content}\nAI Answer (Dummy): This is a simulated response to your question.`,
         sender: "ai",
         timestamp: new Date(),
-      }
-
-      setMessages((prev) => [...prev, aiMessage])
-    } catch (error) {
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: "Sorry, I encountered an error. Please try again.",
-        sender: "ai",
-        timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, errorMessage])
-    } finally {
-      setIsLoading(false)
-    }
-  }
+      };
+      setMessages((prev) => [...prev, aiMessage]);
+      setIsLoading(false);
+    }, 1000);
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {

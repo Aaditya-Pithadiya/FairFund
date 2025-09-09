@@ -50,7 +50,25 @@ export default function AnalyticsPage() {
     { metric: "Approval Rate", value: "78%", change: "+3%", icon: TrendingUp },
     { metric: "Avg Risk Score", value: "32", change: "-5%", icon: AlertTriangle },
     { metric: "Bias Incidents", value: "4", change: "-25%", icon: Users },
-  ]
+  ];
+
+  const dummyAnalytics = [
+    {
+      title: "Risk Score Distribution",
+      description: "Most applicants have risk scores between 60 and 80. (Dummy)",
+      chart: "[Bar Chart Placeholder]"
+    },
+    {
+      title: "Bias Trends",
+      description: "No significant gender or location bias detected. (Dummy)",
+      chart: "[Line Chart Placeholder]"
+    },
+    {
+      title: "Approval Rate",
+      description: "Approval rate is 65% for last 100 applications. (Dummy)",
+      chart: "[Pie Chart Placeholder]"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -92,6 +110,26 @@ export default function AnalyticsPage() {
           })}
         </div>
 
+        {/* Dummy Analytics Section */}
+        <div className="grid lg:grid-cols-1 gap-8 mb-8">
+          <Card>
+            <CardHeader>
+              <CardTitle>Dummy Analytics</CardTitle>
+              <CardDescription>Simulated charts and insights</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                {dummyAnalytics.map((item, idx) => (
+                  <div key={idx} className="bg-gray-50 p-4 rounded">
+                    <h2 className="font-semibold text-lg mb-2">{item.title}</h2>
+                    <p className="text-sm text-gray-700 mb-2">{item.description}</p>
+                    <div className="bg-gray-200 text-gray-500 p-4 rounded text-center">{item.chart}</div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
         <div className="grid lg:grid-cols-2 gap-8 mb-8">
           {/* Risk Distribution */}
           <Card>
@@ -107,7 +145,7 @@ export default function AnalyticsPage() {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    label={(props: any) => `${props.name} ${(props.percent * 100).toFixed(0)}%`}
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="value"

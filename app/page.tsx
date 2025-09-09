@@ -12,6 +12,7 @@ import { toast } from "@/hooks/use-toast"
 export default function HomePage() {
   const [file, setFile] = useState<File | null>(null)
   const [isUploading, setIsUploading] = useState(false)
+  const [dummyResult, setDummyResult] = useState<any | null>(null)
   const router = useRouter()
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,32 +30,17 @@ export default function HomePage() {
 
   const handleAnalyze = async () => {
     if (!file) return
-
     setIsUploading(true)
-    const formData = new FormData()
-    formData.append("file", file)
-
-    try {
-      const response = await fetch("/api/analyze-loan", {
-        method: "POST",
-        body: formData,
+    // Simulate analysis with dummy data
+    setTimeout(() => {
+      setDummyResult({
+        riskScore: 72,
+        explanation: "Risk score is high due to low income and high requested amount. (Dummy)",
+        bias: "Potential bias detected: Age-related terms found. (Dummy)",
+        continualLearning: "Document and Q&A pair stored for future model improvement. (Dummy)"
       })
-
-      if (response.ok) {
-        const result = await response.json()
-        router.push(`/analysis/${result.analysisId}`)
-      } else {
-        throw new Error("Analysis failed")
-      }
-    } catch (error) {
-      toast({
-        title: "Analysis failed",
-        description: "Please try again later.",
-        variant: "destructive",
-      })
-    } finally {
       setIsUploading(false)
-    }
+    }, 1200)
   }
 
   return (
